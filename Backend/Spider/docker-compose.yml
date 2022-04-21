@@ -1,0 +1,13 @@
+version: "3.0"
+
+services:
+    hkjcfootball-spider:
+        build:
+            context: ./
+            dockerfile: ./Dockerfile
+        env_file:
+            - "../env"
+
+networks:
+    hkjcfootball-network:
+        external: true

@@ -1,0 +1,55 @@
+<div [hidden]="finishInit === true">
+    <app-loading></app-loading>
+</div>
+
+<div [hidden]="finishInit === false">
+    <div class="bg-white border sticky-top">
+        <mat-toolbar>
+            <div class="overflow-hidden">
+                <button mat-mini-fab color="primary" [routerLink]="['/match/index']">
+                    <mat-icon>home</mat-icon>
+                </button>
+                {{
+                matchInfo['matchTime'].split('+')[0].replace('T', ' ') + ' ' +
+                '(' + matchInfo['league']['leagueNameCH'] + ') ' +
+                matchInfo['homeTeam']['teamNameCH'] + '(主) 對 '+
+                matchInfo['awayTeam']['teamNameCH'] + '(客)'
+                }}
+            </div>
+        </mat-toolbar>
+        <div class="mx-3 my-1">
+            <div class="my-1">
+                <mat-slide-toggle color="primary" [checked]="showLineCharts"
+                    (change)="showLineCharts = !showLineCharts; saveSetting('sLCs', showLineCharts.toString());">
+                    Show Line Charts
+                </mat-slide-toggle>
+            </div>
+            <div class="my-1">
+                <button mat-stroked-button (click)="getOddsData()">Update</button>
+                <button mat-stroked-button (click)="accordion.openAll()">Expand All</button>
+                <button mat-stroked-button (click)="accordion.closeAll()">Collapse All</button>
+            </div>
+        </div>
+    </div>
+
+    <mat-accordion [multi]=true>
+        <mat-expansion-panel [expanded]="i === 0" *ngFor="let thisPool of definedPools; let i = index;">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{oddsLabels[thisPool]? oddsLabels[thisPool]: thisPool}}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="m-2">
+                <div class="d-flex" *ngIf="showLineCharts">
+                    <ngx-charts-line-chart [animations]=false [autoScale]=true
+                        [results]="lineChartDSCollection[thisPool]" [yAxis]=true>
+                    </ngx-charts-line-chart>
+                </div>
+                <app-odds-table [dataSource]="tableDSCollection[thisPool]['dataSource']"
+                    [colLabels]="tableDSCollection[thisPool]['colLabels']"
+                    [displayedColumns]="tableDSCollection[thisPool]['displayedColumns']">
+                </app-odds-table>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

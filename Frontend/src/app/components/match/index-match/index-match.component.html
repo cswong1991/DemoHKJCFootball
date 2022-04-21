@@ -1,0 +1,41 @@
+<div [hidden]="finishInit === true">
+    <app-loading></app-loading>
+</div>
+
+<div [hidden]="finishInit === false">
+    <div class="bg-white border sticky-top">
+        <mat-toolbar>HKJC足球賠率走勢</mat-toolbar>
+        <div class="mx-3 my-1">
+            <button mat-stroked-button (click)="getIndex()">Update</button>
+            <button mat-stroked-button (click)="accordion.openAll()">Expand All</button>
+            <button mat-stroked-button (click)="accordion.closeAll()">Collapse All</button>
+        </div>
+    </div>
+
+    <mat-accordion [multi]=true>
+        <mat-expansion-panel [expanded]="i === 0" *ngFor="let thisDate of matchDate; let i = index;">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{thisDate}}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ng-template matExpansionPanelContent>
+                <mat-list>
+                    <ng-container *ngFor="let thisMatch of matchIndex">
+                        <ng-container *ngIf="thisMatch['matchDate'].split('+')[0] === thisDate">
+                            <a [href]="'match/view/'+thisMatch['matchID']" mat-list-item>
+                                {{
+                                thisMatch['matchTime'].split('+')[0].replace('T', ' ') + ' ' +
+                                '(' + thisMatch['league']['leagueNameCH'] + ') ' +
+                                thisMatch['homeTeam']['teamNameCH'] + '(主) 對 ' +
+                                thisMatch['awayTeam']['teamNameCH'] + '(客)'
+                                }}
+                            </a>
+                            <mat-divider></mat-divider>
+                        </ng-container>
+                    </ng-container>
+                </mat-list>
+            </ng-template>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

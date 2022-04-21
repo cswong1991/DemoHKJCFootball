@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="ArchiveModel" table="T_ArchivedRecords">
+        <id name="id" column="id">
+            <generator class="native" />
+        </id>
+        <property name="matchID" column="matchID" unique="true" not-null="true" />
+        <property name="matchTime" column="matchTime" type="datetime" not-null="true" />
+        <property name="leagueID" column="leagueID" not-null="true" />
+        <property name="leagueNameCH" column="leagueNameCH" not-null="true" />
+        <property name="hometeamID" column="hometeamID" not-null="true" />
+        <property name="hometeamNameCH" column="hometeamNameCH" not-null="true" />
+        <property name="awayteamID" column="awayteamID" not-null="true" />
+        <property name="awayteamNameCH" column="awayteamNameCH" not-null="true" />
+        <property name="oddsData" column="oddsData" type="text" length="16777215" not-null="true" />
+    </class>
+</hibernate-mapping>

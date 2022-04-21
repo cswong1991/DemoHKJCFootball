@@ -1,0 +1,42 @@
+version: "3.0"
+
+services:
+    hkjcfootball-mysql:
+        image: mysql
+        env_file:
+            - "env"
+        expose:
+            - "3306"
+        ports:
+            - "13301:3306"
+        volumes:
+            - hkjcfootball-mysql:/var/lib/mysql
+        restart: on-failure
+
+    hkjcfootball-redis:
+        image: redis:alpine
+        expose:
+            - "6379"
+        ports:
+            - "16371:6379"
+        restart: on-failure
+
+    hkjcfootball-api:
+        build:
+            context: ./API
+            dockerfile: ./Dockerfile
+        depends_on:
+            - hkjcfootball-mysql
+            - hkjcfootball-redis
+        env_file:
+            - "env"
+        ports:
+            - "8081:8080"
+        restart: on-failure
+
+networks:
+    hkjcfootball-network:
+
+
+volumes:
+    hkjcfootball-mysql:
